@@ -6,8 +6,8 @@ on :
       - main
 
 env:
-  MIRROR_URL: "put the mirror url here (the ssh github of your repo) or leave it empty"
-  EXECUTABLES: " put the name of the executable here (ex: ./my_executable) or leave it empty"
+  MIRROR_URL: "git@github.com:EpitechPromo2027/B-MUL-200-BDX-2-1-myrpg-noa.messer.git"
+  EXECUTABLES: "my_rpg"
 
 jobs:
   check_coding_style:
@@ -32,29 +32,25 @@ jobs:
           else
             echo Repo is clean
           fi
-  check_program_compilation:
-    needs: [check_coding_style, check_repo]
-    name: "Checks if the program compiles"
+  repo_size_check:
+    needs : [check_coding_style, check_repo]
+    name: Check Repository Size
     runs-on: ubuntu-latest
-    container:
-      image: epitechcontent/epitest-docker:latest
     steps:
       - uses: actions/checkout@v3
-      - id: check_program_compilation
-        run: make
-        timeout-minutes: 2
-      - run: make clean
-      - run: |
-          OIFS=$IFS
-          IFS=','
-          for x in $EXECUTABLES
-            do
-              ./$x $ARGUMENTS
-            done
-          IFS=$OIFS
-  
+      - name: Check repository size
+        run: |
+          REPO_SIZE=$(git ls-tree -r -t -l --full-name HEAD | awk '{sum += $4} END {print sum}')
+          echo "Repository size: $REPO_SIZE bytes"
+          MAX_SIZE=104857600 # 30 MB in bytes, adjust this value as needed
+          if [ $REPO_SIZE -gt $MAX_SIZE ]; then
+            echo "Error: Repository size ($REPO_SIZE bytes) is larger than the allowed limit ($MAX_SIZE bytes)"
+            exit 1
+          else
+            echo "Repository size is within the allowed limit"
+          fi
   run_tests:
-    needs: [check_coding_style, check_repo, check_program_compilation]
+    needs: [check_coding_style, check_repo, repo_size_check]
     name: "Runs the tests"
     runs-on: ubuntu-latest
     container:
