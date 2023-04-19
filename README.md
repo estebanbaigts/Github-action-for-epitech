@@ -47,3 +47,16 @@ You will receive an email if the coding style checker detects standard errors.
 
 Create a .github/workflows/ folder in the root of your project.
 Create a file named coding_style.yml in the .github/workflows/ folder and place the following content inside the file:
+
+name : check_program
+
+on :
+push :
+branches : - main
+
+jobs:
+coding_style:
+name: Coding Style
+runs-on: ubuntu-latest
+steps: - uses: actions/checkout@v3 - name: check coding style
+run: curl -fsSL https://raw.githubusercontent.com/estebanbaigts/Github-action-for-epitech/main/coding-style.sh | bash -s . .
