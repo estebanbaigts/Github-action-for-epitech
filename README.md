@@ -46,7 +46,7 @@ Github allows you to add automatic tests when you make a push. You can test for 
 You will receive an email if the coding style checker detects standard errors.
 
 Create a .github/workflows/ folder in the root of your project.
-Create a file named coding_style.yml in the .github/workflows/ folder and place the following content inside the file:
+Create a file named check_program.yml in the .github/workflows/ folder and place the following content inside the file:
 
 ```
 name : check_program_epitech
