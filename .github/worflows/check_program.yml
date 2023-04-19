@@ -12,4 +12,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: check coding style
-        run: curl -fsSL https://raw.githubusercontent.com/xschahl/Epitech-Coding-Style-Checker/main/coding-style.sh | bash -s . .
+        run: curl -fsSL https://raw.githubusercontent.com/estebanbaigts/Github-action-for-epitech/main/coding-style.sh | bash -s . .
