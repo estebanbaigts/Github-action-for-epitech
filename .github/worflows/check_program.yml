@@ -1,0 +1,15 @@
+name : check_program
+
+on :
+  push :
+    branches :
+      - main
+
+jobs:
+  coding_style:
+    name: Coding Style
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: check coding style
+        run: curl -fsSL https://raw.githubusercontent.com/xschahl/Epitech-Coding-Style-Checker/main/coding-style.sh | bash -s . .
